@@ -1,0 +1,267 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Login | DashSocial</title>
+    {% comment %} <link rel="stylesheet" href="style.css"> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/signup_desh.css' %}">
+</head>
+<body>
+    <div class="container">
+        <!-- animated background elements -->
+        <div class="bg-animation">
+            <div class="circle circle-1"></div>
+            <div class="circle circle-2"></div>
+            <div class="circle circle-3"></div>
+            <div class="circle circle-4"></div>
+        </div>
+
+        <!-- main card -->
+        <div class="card">
+            <!-- logo with animation -->
+            <div class="logo-wrapper">
+                <div class="logo">
+                    <span>DashSocial</span>
+                </div>
+                <div class="logo-badge"></div>
+            </div>
+
+            <!-- welcome text with fade animation -->
+            <div class="welcome-text">
+                <h2 class="fade-in">Welcome Back</h2>
+                <p class="fade-in delay-1">Sign in to continue your journey</p>
+            </div>
+
+            <!-- login form -->
+            <!-- divider with animation -->
+            <div class="divider slide-up delay-3">
+                <div class="divider-line"></div>
+                <div class="divider-text">continue with</div>
+                <div class="divider-line"></div>
+            </div>
+
+            <!-- social login buttons with hover animations -->
+            {% comment %} <div class="social-login slide-up delay-4">
+
+                <button class="social-btn google" id="googleLogin">
+                    <a href="{% url "login" %}" class="nav-link">
+                        Log In
+                    </a>
+                </button>
+
+                <button class="social-btn facebook" id="facebookLogin">
+                    <a href="{% url "signup" %}" class="nav-link">
+                    Sign-Up
+                    </a>
+                </button>
+
+            </div> {% endcomment %}
+
+
+            <div class="social-login slide-up delay-4">
+
+                <a href="{% url 'login' %}" class="social-btn google">
+                    Log In
+                </a>
+
+                <a href="{% url 'signup' %}" class="social-btn facebook">
+                    Sign-Up
+                </a>
+
+            </div>
+
+            <!-- message container -->
+            <div id="messageContainer" class="message-container" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const loginForm = document.getElementById('loginForm');
+        const loginUsername = document.getElementById('loginUsername');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const forgotLink = document.getElementById('forgotLink');
+        const signupLink = document.getElementById('signupLink');
+        const googleLogin = document.getElementById('googleLogin');
+        const facebookLogin = document.getElementById('facebookLogin');
+        const togglePassword = document.getElementById('togglePassword');
+        const rememberCheckbox = document.getElementById('rememberMe');
+        const messageContainer = document.getElementById('messageContainer');
+
+        // Show message function with animation
+        function showMessage(text, isError = true) {
+            messageContainer.style.display = 'block';
+            messageContainer.textContent = text;
+            messageContainer.className = `message-container ${isError ? 'error-msg' : 'success-msg'} slide-up`;
+            
+            // Add shake animation for errors
+            if (isError) {
+                messageContainer.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => {
+                    messageContainer.style.animation = '';
+                }, 500);
+            }
+            
+            // Auto hide after 3 seconds
+            setTimeout(() => {
+                messageContainer.style.opacity = '0';
+                setTimeout(() => {
+                    messageContainer.style.display = 'none';
+                    messageContainer.style.opacity = '';
+                }, 300);
+            }, 3000);
+        }
+
+        // Button ripple effect
+        function createRipple(event, button) {
+            const ripple = document.createElement('div');
+            ripple.classList.add('ripple-effect');
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            ripple.classList.add('ripple-animate');
+            
+            button.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        // Login validation
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = loginUsername.value.trim();
+            const password = loginPassword.value.trim();
+            
+            // Add button loading animation
+            loginBtn.classList.add('loading');
+            loginBtn.disabled = true;
+            
+            setTimeout(() => {
+                loginBtn.classList.remove('loading');
+                loginBtn.disabled = false;
+            }, 1000);
+            
+            if (!username) {
+                showMessage('Please enter your username, email or phone number.', true);
+                loginUsername.style.animation = 'shake 0.5s ease-in-out';
+                setTimeout(() => loginUsername.style.animation = '', 500);
+                return;
+            }
+            
+            // Demo success
+            showMessage(`✨ Welcome back, ${username}! Login successful.`, false);
+            
+            // Clear form after success
+            setTimeout(() => {
+                loginUsername.value = '';
+                loginPassword.value = '';
+            }, 800);
+        }
+        
+        // Forgot password
+        function handleForgot(e) {
+            e.preventDefault();
+            showMessage('📧 Password reset link has been sent to your email!', false);
+        }
+        
+        // Sign up link
+        function handleSignup(e) {
+            e.preventDefault();
+            showMessage('🎉 Redirecting to sign up page...', false);
+            setTimeout(() => {
+                alert('Sign up page would open here in a real app!');
+            }, 500);
+        }
+        
+        // Social login handlers
+        function handleGoogleLogin(e) {
+            e.preventDefault();
+            showMessage('🔐 Connecting to Google... (demo)', false);
+            setTimeout(() => {
+                showMessage('Google login successful! (demo)', false);
+            }, 1000);
+        }
+        
+        function handleFacebookLogin(e) {
+            e.preventDefault();
+            showMessage('📘 Connecting to Facebook... (demo)', false);
+            setTimeout(() => {
+                showMessage('Facebook login successful! (demo)', false);
+            }, 1000);
+        }
+        
+        // Toggle password visibility
+        function handleTogglePassword() {
+            const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+            loginPassword.setAttribute('type', type);
+            togglePassword.textContent = type === 'password' ? '👁️' : '🙈';
+        }
+        
+        // Remember me functionality
+        function loadRememberedUser() {
+            const remembered = localStorage.getItem('rememberedUser');
+            if (remembered) {
+                loginUsername.value = remembered;
+                rememberCheckbox.checked = true;
+                showMessage(`Welcome back, ${remembered}!`, false);
+            }
+        }
+        
+        // Event listeners
+        loginBtn.addEventListener('click', (e) => {
+            createRipple(e, loginBtn);
+            handleLogin(e);
+        });
+        
+        forgotLink.addEventListener('click', handleForgot);
+        signupLink.addEventListener('click', handleSignup);
+        googleLogin.addEventListener('click', (e) => {
+            createRipple(e, googleLogin);
+            handleGoogleLogin(e);
+        });
+        facebookLogin.addEventListener('click', (e) => {
+            createRipple(e, facebookLogin);
+            handleFacebookLogin(e);
+        });
+        togglePassword.addEventListener('click', handleTogglePassword);
+        
+        // Allow Enter key to submit
+        function handleEnter(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                createRipple(e, loginBtn);
+                handleLogin(e);
+            }
+        }
+        
+        loginUsername.addEventListener('keypress', handleEnter);
+        loginPassword.addEventListener('keypress', handleEnter);
+        
+        // Load remembered user on page load
+        loadRememberedUser();
+        
+        // Add focus animations
+        const inputs = document.querySelectorAll('.input-group input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.classList.add('focused');
+            });
+            input.addEventListener('blur', () => {
+                if (!input.value) {
+                    input.parentElement.classList.remove('focused');
+                }
+            });
+        });
+        
+    </script>
+</body>
+</html>

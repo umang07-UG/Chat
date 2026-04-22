@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Dashboard</title>
+
+    <!-- Google Fonts + Font Awesome 6 (Free) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        /* Main card – modern glassmorphism, clean and stable */
+        .glass-card {
+            background: rgba(20, 25, 45, 0.75);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 540px;
+            padding: 2rem 2rem 2.2rem;
+            transition: box-shadow 0.2s ease;
+        }
+
+        /* avatar area */
+        .avatar-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .avatar-icon {
+            background: linear-gradient(145deg, #8b5cf6, #6366f1);
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            color: white;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* welcome text */
+        .welcome-title {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .greeting-line {
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #c7d2fe;
+            margin-bottom: 0.4rem;
+        }
+
+        .user-name {
+            font-size: 2.1rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #ffffff, #e0e7ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            word-break: break-word;
+        }
+
+        /* live info row */
+        .live-info {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 1rem 0 1.8rem 0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #e2e8f0;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            backdrop-filter: blur(4px);
+        }
+
+        .live-info i {
+            margin-right: 6px;
+            color: #a78bfa;
+        }
+
+        .clock {
+            font-family: monospace;
+            letter-spacing: 0.5px;
+        }
+
+        /* button grid – clean, no extra transforms/hovers */
+        .action-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            margin: 2rem 0 0.5rem;
+        }
+
+        .btn-modern {
+            flex: 1;
+            min-width: 140px;
+            padding: 0.85rem 1.2rem;
+            border: none;
+            border-radius: 2.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: opacity 0.2s, background 0.2s;
+            color: white;
+        }
+
+        /* button individual styles */
+        .btn-chat {
+            background: #10b981;
+        }
+        .btn-chat:hover {
+            background: #059669;
+        }
+
+        .btn-logs {
+            background: #3b82f6;
+        }
+        .btn-logs:hover {
+            background: #2563eb;
+        }
+
+        .btn-logout {
+            background: #ef4444;
+        }
+        .btn-logout:hover {
+            background: #dc2626;
+        }
+
+        /* simple footer text */
+        .footer-note {
+            text-align: center;
+            margin-top: 1.8rem;
+            font-size: 0.7rem;
+            color: #a5b4fc;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 1rem;
+        }
+
+        /* responsive */
+        @media (max-width: 540px) {
+            .glass-card {
+                padding: 1.5rem 1.2rem;
+                border-radius: 1.5rem;
+            }
+            .user-name {
+                font-size: 1.7rem;
+            }
+            .btn-modern {
+                min-width: 120px;
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+            }
+            .avatar-icon {
+                width: 68px;
+                height: 68px;
+                font-size: 2.3rem;
+            }
+        }
+
+        @media (max-width: 460px) {
+            .action-grid {
+                flex-direction: column;
+                gap: 0.9rem;
+            }
+            .btn-modern {
+                width: 100%;
+            }
+        }
+
+        /* accessibility focus */
+        .btn-modern:focus-visible {
+            outline: 2px solid #f0f9ff;
+            outline-offset: 2px;
+        }
+
+        .avatar-icon img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-card">
+        <!-- avatar icon -->
+        {% comment %} <div class="avatar-wrapper">
+            <div class="avatar-icon">
+                <i class="fas fa-user-astronaut"></i>
+                <img src="{{ user.profile_image.url }}" alt="Profile Image" class="avatar">
+            </div>
+        </div> {% endcomment %}
+
+        <div class="avatar-wrapper">
+            <div class="avatar-icon">
+                {% if user.profile_image %}
+                    <img src="{{ user.profile_image.url }}" alt="User Image">
+                {% else %}
+                    <i class="fas fa-user-astronaut"></i>
+                {% endif %}
+            </div>
+        </div>
+
+
+        <!-- dynamic welcome + Django variable -->
+        <div class="welcome-title">
+            <div class="greeting-line" id="dynamicGreeting">
+                <i class="fas fa-hand-peace"></i> WELCOME
+            </div>
+            <div class="user-name">
+                Welcome {{ user.name }}
+            </div>
+
+             {% comment %} <h2 class="mb-4">Welcome {{ user.name }} 👋</h2> {% endcomment %}
+
+        </div>
+
+        <!-- live date & clock (simple, functional) -->
+        <div class="live-info">
+            <span><i class="far fa-calendar-alt"></i> <span id="currentDate"></span></span>
+            <span class="clock"><i class="far fa-clock"></i> <span id="liveClock">--:--:--</span></span>
+        </div>
+
+        <!-- action buttons (Django template URLs) -->
+        <div class="action-grid">
+            <a href="{% url 'chat' %}" class="btn-modern btn-chat">
+                <i class="fas fa-comment-dots"></i> Chat
+            </a>
+            <a href="{% url 'show_logs' %}" class="btn-modern btn-logs">
+                <i class="fas fa-history"></i> Logs
+            </a>
+            <a href="{% url 'logout_view' %}" class="btn-modern btn-logout">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+            
+        </div>
+
+        <div class="footer-note">
+            <i class="fas fa-shield-alt"></i> secure • connected
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // ---- dynamic greeting based on local time (no extra effects) ----
+            const userNameElem = document.querySelector('.user-name');
+            let userName = 'Explorer';
+            if (userNameElem) {
+                let raw = userNameElem.innerText.trim();
+                if (raw && raw !== '{{ user.name }}') {
+                    userName = raw;
+                } else {
+                    userName = 'Guest';
+                    userNameElem.innerText = userName;
+                }
+            }
+            // extract first name for greeting
+            const firstName = userName.split(' ')[0];
+            const greetingSpan = document.getElementById('dynamicGreeting');
+            if (greetingSpan) {
+                const hour = new Date().getHours();
+                let greetingText = '';
+                let icon = '';
+                if (hour >= 5 && hour < 12) {
+                    greetingText = 'GOOD MORNING';
+                    icon = '🌅';
+                } else if (hour >= 12 && hour < 17) {
+                    greetingText = 'GOOD AFTERNOON';
+                    icon = '☀️';
+                } else if (hour >= 17 && hour < 21) {
+                    greetingText = 'GOOD EVENING';
+                    icon = '🌙';
+                } else {
+                    greetingText = 'NIGHT OWL';
+                    icon = '🌟';
+                }
+                greetingSpan.innerHTML = `<i class="fas fa-smile-wink"></i> ${icon} ${greetingText}, ${firstName}`;
+            }
+
+            // ---- live clock + date (simple update) ----
+            function updateDateTime() {
+                const now = new Date();
+                const dateOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+                const formattedDate = now.toLocaleDateString(undefined, dateOptions);
+                const dateSpan = document.getElementById('currentDate');
+                if (dateSpan) dateSpan.textContent = formattedDate;
+                
+                const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+                const clockSpan = document.getElementById('liveClock');
+                if (clockSpan) clockSpan.textContent = timeStr;
+            }
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+        })();
+    </script>
+</body>
+</html>

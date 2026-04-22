@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Login | DashSocial</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    {% comment %} <link rel="stylesheet" href="style.css"> {% endcomment %}
+</head>
+<body>
+    <div class="container">
+        <!-- Back Button -->
+        <a href="javascript:history.back()" class="back-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Back</span>
+        </a>
+        {% if msg %}
+                <div id="alertBox" class="alert alert-danger alert-dismissible fade show shadow rounded" role="alert">
+                    <strong>Oops!</strong> {{ msg }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <script>
+                    setTimeout(function() {
+                        var alert = document.getElementById('alertBox');
+                        if (alert) {
+                            alert.classList.remove('show');
+                            alert.classList.add('fade');
+                            setTimeout(() => alert.remove(), 500);
+                        }
+                    }, 5000); // 5 seconds
+                </script>
+                {% endif %}
+        <!-- Main Card -->
+        <div class="card">
+            <!-- Logo -->
+            <div class="logo">
+                <span>DashSocial</span>
+            </div>
+
+            <!-- Login Form -->
+            <form class="login-form" action="{% url 'login' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="input-group">
+                    {% comment %} <input type="text" id="username" name="username" placeholder="Username" required> {% endcomment %}
+                    <input type="email" id="signupEmail" placeholder="Email" name="email" required>
+
+                </div>
+
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+
+                <button type="submit" class="login-btn">Log In</button>
+            </form>
+
+            <!-- Signup Link -->
+            <div class="signup-link">
+                Don't have an account? <a href="{% url "signup" %}">Sign up</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,309 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Sign Up | DashSocial</title>
+    {% comment %} <link rel="stylesheet" href="style.css"> {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+</head>
+<body>
+    <div class="container">
+        <!-- left side - phone mockup (instagram style) -->
+        <div class="phone-mock">
+            <svg width="320" height="580" viewBox="0 0 320 580" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="8" width="304" height="564" rx="40" fill="white" stroke="#DBDBDB" stroke-width="1.5"/>
+                <rect x="20" y="30" width="280" height="520" rx="28" fill="#FAFAFA"/>
+                <!-- status bar mock -->
+                <rect x="40" y="45" width="240" height="18" fill="#EDEDED" rx="4"/>
+                <!-- story circles -->
+                <circle cx="60" cy="95" r="22" fill="#E0E0E0"/>
+                <circle cx="110" cy="95" r="22" fill="#E0E0E0"/>
+                <circle cx="160" cy="95" r="22" fill="#E0E0E0"/>
+                <!-- post placeholder -->
+                <rect x="40" y="135" width="240" height="180" fill="#E8E8E8" rx="12"/>
+                <rect x="40" y="330" width="240" height="12" fill="#E0E0E0" rx="4"/>
+                <rect x="40" y="355" width="180" height="12" fill="#E0E0E0" rx="4"/>
+                <rect x="40" y="380" width="210" height="12" fill="#E0E0E0" rx="4"/>
+                <rect x="40" y="415" width="240" height="100" fill="#E8E8E8" rx="12"/>
+                <text x="100" y="550" fill="#A0A0A0" font-size="10" font-family="monospace">instagram vibe</text>
+            </svg>
+        </div>
+
+        <!-- right side - signup form -->
+        <div class="form-container">
+            <!-- main signup card -->
+            <div class="card">
+                <div class="logo">
+                    <span>DashSocial</span>
+                    {% if msg %}
+                    <div id="alertBox" class="alert alert-danger alert-dismissible fade show shadow rounded" role="alert">
+                        <strong>Oops!</strong> {{ msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <script>
+                        setTimeout(function() {
+                            var alert = document.getElementById('alertBox');
+                            if (alert) {
+                                alert.classList.remove('show');
+                                alert.classList.add('fade');
+                                setTimeout(() => alert.remove(), 500);
+                            }
+                        }, 5000); // 5 seconds
+                    </script>
+                    {% endif %}
+                </div>
+                
+                <div class="tagline">
+                    Sign up to see photos and updates from your friends.
+                </div>
+
+                <!-- SIGNUP FORM -->
+                <form id="signupForm" class="form" action="{% url 'signup' %}" method="post" enctype="multipart/form-data" >
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <input type="text" id="signupUsername" placeholder="Username" name="name" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="email" id="signupEmail" placeholder="Email" name="email" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="tel" id="signupMobile" placeholder="Mobile Number" 
+                            name="mobile"  maxlength="10">
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" id="signupPassword" placeholder="Password" name="password" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" id="signupPassword" placeholder="Correct Password" name="cpassword" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="file" name="profile_image" id="profileImage" accept="image/*" name="profile_image" required>
+                    </div>
+                                
+                    <div class="form-group">
+                        <button type="submit" class="btn1"> Sign Up</button>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="submit-btn-bck" id="signupBtn" onclick="goBack()">Back</button>
+                    </div>
+
+                    {% comment %} <button type="submit" class="submit-btn-bck" id="signupBtn" onclick="goBack()">Back</button> {% endcomment %}
+    
+
+                    <div class="divider">
+                        <div class="divider-line"></div>
+                        <div class="divider-text">OR</div>
+                        <div class="divider-line"></div>
+                    </div>
+                    
+                    <div class="meta-links">
+                        <a href="#" id="facebookLink">
+                            <span>📘</span> Log in with Facebook
+                        </a>
+                    </div>
+                    
+                    <div id="signupMessage" class="message" style="display: none;"></div>
+                </form>
+                
+                <div class="terms">
+                    By signing up, you agree to our <a href="#">Terms</a>, 
+                    <a href="#">Privacy Policy</a> and <a href="#">Cookies Policy</a>.
+                </div>
+            </div>
+
+            <!-- login link (like instagram) -->
+            <div class="login-prompt">
+                <span>Already have an account?</span>
+                <a href="{% url 'login' %}" id="loginLink">Log in</a>
+            </div>
+
+            <!-- footer links -->
+            <div class="footer">
+                <div class="footer-links">
+                    <a href="#">About</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Help</a>
+                    <a href="#">API</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                </div>
+                <div>© 2025 DashSocial</div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // DOM elements
+        const signupForm = document.getElementById('signupForm');
+        const signupEmail = document.getElementById('signupEmail');
+        const signupFullname = document.getElementById('signupFullname');
+        const signupUsername = document.getElementById('signupUsername');
+        const signupPassword = document.getElementById('signupPassword');
+        const signupBtn = document.getElementById('signupBtn');
+        const signupMessageDiv = document.getElementById('signupMessage');
+        const facebookLink = document.getElementById('facebookLink');
+        
+        function goBack() {
+                            window.history.back();
+                        }
+        // Helper to show messages
+        function showMessage(element, text, isError = true) {
+            element.textContent = text;
+            element.style.display = 'block';
+            element.className = `message ${isError ? 'error-msg' : 'success-msg'}`;
+            
+            // auto hide after 3 seconds
+            setTimeout(() => {
+                if (element.style.display === 'block') {
+                    element.style.opacity = '1';
+                    element.style.transition = 'opacity 0.2s';
+                    element.style.opacity = '0';
+                    setTimeout(() => {
+                        element.style.display = 'none';
+                        element.style.opacity = '';
+                    }, 200);
+                }
+            }, 3000);
+        }
+
+        // Signup validation
+        function handleSignup(e) {
+            e.preventDefault();
+            
+            const email = signupEmail.value.trim();
+            const fullname = signupFullname.value.trim();
+            const username = signupUsername.value.trim();
+            const password = signupPassword.value.trim();
+
+            // Validation
+            if (!email) {
+                showMessage(signupMessageDiv, 'Email is required.', true);
+                return;
+            }
+            if (!email.includes('@') || !email.includes('.')) {
+                showMessage(signupMessageDiv, 'Please enter a valid email address.', true);
+                return;
+            }
+            
+            if (!fullname) {
+                showMessage(signupMessageDiv, 'Full name is required.', true);
+                return;
+            }
+            if (fullname.length < 2) {
+                showMessage(signupMessageDiv, 'Please enter your real full name.', true);
+                return;
+            }
+            
+            if (!username) {
+                showMessage(signupMessageDiv, 'Username is required.', true);
+                return;
+            }
+            if (username.length < 3) {
+                showMessage(signupMessageDiv, 'Username must be at least 3 characters.', true);
+                return;
+            }
+            if (username.includes(' ')) {
+                showMessage(signupMessageDiv, 'Username cannot contain spaces.', true);
+                return;
+            }
+            
+            if (!password) {
+                showMessage(signupMessageDiv, 'Please choose a password.', true);
+                return;
+            }
+            if (password.length < 4) {
+                showMessage(signupMessageDiv, 'Password must be at least 4 characters.', true);
+                return;
+            }
+            
+            // Check for password strength (optional)
+            if (password.toLowerCase() === password) {
+                showMessage(signupMessageDiv, 'Tip: Add uppercase letters or numbers for a stronger password.', false);
+            }
+
+            // Simulate successful signup
+            showMessage(signupMessageDiv, `🎉 Welcome to DashSocial, ${username}! Account created successfully.`, false);
+            
+            // Clear form after success
+            setTimeout(() => {
+                signupEmail.value = '';
+                signupFullname.value = '';
+                signupUsername.value = '';
+                signupPassword.value = '';
+                // In a real app, you would redirect to login or dashboard
+                showMessage(signupMessageDiv, 'You can now log in with your credentials!', false);
+            }, 1500);
+        }
+
+        // Facebook login demo
+        function handleFacebookLogin(e) {
+            e.preventDefault();
+            showMessage(signupMessageDiv, '📘 Facebook login (demo) - This would connect to Facebook API', false);
+        }
+
+        // Event listeners
+        signupBtn.addEventListener('click', handleSignup);
+        facebookLink.addEventListener('click', handleFacebookLogin);
+        
+        // Allow Enter key to submit
+        function handleEnterOnSignup(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSignup(e);
+            }
+        }
+        
+        signupEmail.addEventListener('keypress', handleEnterOnSignup);
+        signupFullname.addEventListener('keypress', handleEnterOnSignup);
+        signupUsername.addEventListener('keypress', handleEnterOnSignup);
+        signupPassword.addEventListener('keypress', handleEnterOnSignup);
+        
+        // Real-time username availability check (demo)
+        signupUsername.addEventListener('blur', function() {
+            const username = this.value.trim();
+            if (username.length >= 3) {
+                // Simulate checking username availability
+                const takenUsernames = ['john', 'jane', 'admin', 'user', 'test'];
+                if (takenUsernames.includes(username.toLowerCase())) {
+                    showMessage(signupMessageDiv, `Username "${username}" is not available. Please choose another.`, true);
+                    this.style.borderColor = '#ed4956';
+                } else {
+                    if (username) {
+                        showMessage(signupMessageDiv, `✓ Username "${username}" is available!`, false);
+                        this.style.borderColor = '#dbdbdb';
+                    }
+                }
+            }
+        });
+        
+        // Password strength indicator
+        signupPassword.addEventListener('input', function() {
+            const password = this.value;
+            if (password.length > 0 && password.length < 4) {
+                this.style.borderColor = '#ed4956';
+            } else if (password.length >= 4 && password.length < 6) {
+                this.style.borderColor = '#ffa500';
+            } else if (password.length >= 6) {
+                this.style.borderColor = '#4caf50';
+            } else {
+                this.style.borderColor = '#dbdbdb';
+            }
+        });
+        
+        console.log('Signup page ready');
+    </script>
+</body>
+</html>
